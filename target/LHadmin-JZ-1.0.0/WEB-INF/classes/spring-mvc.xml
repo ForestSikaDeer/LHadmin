@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+
+    <!--    注解扫描-->
+    <context:component-scan base-package="com.jz.controller" >
+
+    </context:component-scan>
+    <!--     静态资源默认的servlet配置-->
+    <mvc:default-servlet-handler/>
+
+    <!--    注解驱动-->
+    <mvc:annotation-driven/>
+
+
+    <!--    视图解析器
+          作用 ：1.捕获后端控制器的返回值 如果返回的是hello
+                2.解析：在返回值前后拼接 "/hello.jsp"
+    -->
+    <mvc:resources mapping="/plugins/**" location="/plugins/"></mvc:resources>
+    <mvc:resources mapping="/img/**" location="/img/"></mvc:resources>
+    <mvc:resources mapping="/css/**" location="/css/"></mvc:resources>
+
+    <bean id="ResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--    自定义拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/toLogin.action"/>
+            <mvc:exclude-mapping path="/login/login.action"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/img/**"/>
+            <mvc:exclude-mapping path="/plugins/**"/>
+            <bean class="com.jz.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
+
+

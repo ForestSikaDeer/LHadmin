@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--    扫描service下的包 也就是扫描相关的bean-->
+    <context:component-scan base-package="com.jz.service">
+
+    </context:component-scan>
+    <!--    将我们的所有业务类，注入到spring，可以通过配置或者注解实现-->
+<!--    <bean id="BookServiceImpl" class="com.jz.service.impl.OrderServiceImpl">-->
+<!--        <property name="" ref="bookMapper"></property>-->
+<!--    </bean>-->
+
+
+    <!--    引入一个事务管理器，其中依赖DataSource，借以获取连接，进而控制事务逻辑-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--        注入数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--    aop事务支持-->
+</beans>
